@@ -3,9 +3,7 @@ export default function Home() {
     <>
       <section id="videos-list" className="">
         <div id="videos-list-item">
-          <div className="video">
-            video here
-          </div>
+          <div className="video">video here</div>
           <div className="video-info">
             <div className="video-title"></div>
             <div className="shared-by"></div>
@@ -25,9 +23,7 @@ export default function Home() {
             </div>
             <div className="description">
               <h2>Description</h2>
-              <div className="description-content">
-                lorem ipsum
-              </div>
+              <div className="description-content">lorem ipsum</div>
             </div>
           </div>
         </div>

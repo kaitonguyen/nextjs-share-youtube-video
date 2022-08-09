@@ -5,7 +5,7 @@ export default function Layout({ children }) {
     <>
       <div className="">
         <Navbar />
-        <main>{children}</main>
+        <main className="flex justify-center">{children}</main>
       </div>
     </>
   );
