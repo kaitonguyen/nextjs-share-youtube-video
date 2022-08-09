@@ -62,11 +62,15 @@ const ThumbDownIconSolid = ({ className = "h-7 w-7" }) => {
   );
 };
 
-export default function Home() {
+export default function Home({ email }) {
+  console.log(email);
   return (
     <>
       <section id="videos-list" className="container max-w-6xl m-auto">
-        <div id="videos-list-item" className="w-full flex justify-center mt-7 overflow-hidden">
+        <div
+          id="videos-list-item"
+          className="w-full flex justify-center mt-7 overflow-hidden"
+        >
           <div className="video basis-1/2">
             <iframe
               width="560"
@@ -79,7 +83,9 @@ export default function Home() {
             ></iframe>
           </div>
           <div className="video-info basis-1/2">
-            <h2 className="video-title text-rose-600 text-2xl font-bold">Video Title</h2>
+            <h2 className="video-title text-rose-600 text-2xl font-bold">
+              Video Title
+            </h2>
             <div className="flex gap-4">
               <div className="shared-by">Shared by nguyenhieuky@gmail.com</div>
               <div className="vote-buttons">

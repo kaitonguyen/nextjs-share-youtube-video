@@ -1,6 +1,29 @@
 import Link from "next/link";
+import { Router, useRouter } from "next/router";
+import { useState } from "react";
 
-const Navbar = () => {
+const Navbar = ({ email, setEmail }) => {
+  const router = useRouter();
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    const email = e.target[0].value;
+    const password = e.target[1].value;
+    if (!email || !password) {
+      alert("Please enter email and password");
+    } else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+      alert("This email is invalid.");
+    } else {
+      setEmail(email);
+      e.target.reset();
+    }
+  };
+
+  const handleLogout = async () => {
+    await setEmail("");
+    router.push("/");
+  };
+
   return (
     <header className="container max-w-6xl m-auto border-b border-b-stone-600 py-4 flex justify-between items-center">
       <div className="">
@@ -21,15 +44,37 @@ const Navbar = () => {
         </h1>
       </div>
       <div className="">
-        <div id="authenticated" className="flex md:gap-5 items-center hidden">
-          <span>nguyenhieuky@gmail.com</span>
-          <button className="px-5 py-3 bg-sky-600 text-white">Share a movie</button>
-          <button className="px-5 py-3 bg-rose-500 text-white">Logout</button>
+        <div
+          id="authenticated"
+          className={`flex md:gap-5 items-center ${!email && "hidden"}`}
+        >
+          <span>Welcome {email}</span>
+          <Link href={"/share"}>
+            <a className="px-5 py-3 bg-sky-600 text-white">Share a movie</a>
+          </Link>
+          <button
+            className="px-5 py-3 bg-rose-500 text-white"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
         </div>
-        <div id="unauthenticated" className="flex md:gap-5">
-          <input type="text" id="email" placeholder="email" className="" />
-          <input type="password" id="password" placeholder="password" className="" />
-          <button className="px-5 py-3 bg-sky-600 text-white">Login/Register</button>
+        <div id="unauthenticated">
+          <form
+            onSubmit={handleLogin}
+            className={`flex md:gap-5 ${email && "hidden"}`}
+          >
+            <input type="text" id="email" placeholder="email" className="" />
+            <input
+              type="password"
+              id="password"
+              placeholder="password"
+              className=""
+            />
+            <button className="px-5 py-3 bg-sky-600 text-white">
+              Login/Register
+            </button>
+          </form>
         </div>
       </div>
     </header>
