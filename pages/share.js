@@ -24,7 +24,7 @@ export default function Share({ email, videosList, setVideosList }) {
       const videoInfo = await getVideoInfo(videoUrl);
 
       await setVideosList((oldVideosList) => [
-        { ...videoInfo, sharedBy: email },
+        { ...videoInfo, sharedBy: email, timestamp: Date.now() },
         ...oldVideosList,
       ]);
       e.target.reset();

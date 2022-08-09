@@ -6,6 +6,7 @@ import Layout from "../components/layout";
 function MyApp({ Component, pageProps }) {
   const [email, setEmail] = useState("");
   const [videosList, setVideosList] = useState([]);
+  const [voteState, setVoteState] = useState(null);
 
   return (
     <Layout setEmail={setEmail} email={email}>
@@ -14,6 +15,8 @@ function MyApp({ Component, pageProps }) {
         email={email}
         videosList={videosList}
         setVideosList={setVideosList}
+        voteState={voteState}
+        setVoteState={setVoteState}
       />
     </Layout>
   );
