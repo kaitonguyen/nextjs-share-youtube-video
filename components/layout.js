@@ -5,7 +5,7 @@ export default function Layout({ email, setEmail, children }) {
     <>
       <div className="">
         <Navbar email={email} setEmail={setEmail} />
-        <main className="flex justify-center">{children}</main>
+        <main className="flex justify-center pb-10">{children}</main>
       </div>
     </>
   );

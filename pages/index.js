@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const ThumbUpIconOutline = ({ className = "h-7 w-7" }) => {
   return (
     <svg
@@ -62,67 +64,78 @@ const ThumbDownIconSolid = ({ className = "h-7 w-7" }) => {
   );
 };
 
-export default function Home({ email }) {
-  console.log(email);
+export default function Home({ email, videosList, setVideosList }) {
+  // console.log(email);
+  // console.log(videosList);
   return (
     <>
       <section id="videos-list" className="container max-w-6xl m-auto">
-        <div
-          id="videos-list-item"
-          className="w-full flex justify-center mt-7 overflow-hidden"
-        >
-          <div className="video basis-1/2">
-            <iframe
-              width="560"
-              height="315"
-              src="https://www.youtube.com/embed/wdJS7fPmsNs"
-              title="YouTube video player"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-            ></iframe>
-          </div>
-          <div className="video-info basis-1/2">
-            <h2 className="video-title text-rose-600 text-2xl font-bold">
-              Video Title
-            </h2>
-            <div className="flex gap-4">
-              <div className="shared-by">Shared by nguyenhieuky@gmail.com</div>
-              <div className="vote-buttons">
-                <div className="un-vote  flex gap-1">
-                  <div className="up-vote">
-                    <ThumbUpIconOutline />
-                  </div>
-                  <div className="down-vote">
-                    <ThumbDownIconOutline />
-                  </div>
+        {videosList.map((video) => {
+          return (
+            <>
+              <div
+                id="videos-list-item"
+                className="w-full grid grid-cols-2 justify-center mt-12"
+              >
+                <div className="video">
+                  <iframe
+                    width="560"
+                    height="315"
+                    src={`https://www.youtube.com/embed/${video.id}`}
+                    title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                  ></iframe>
                 </div>
-                <div className="voted hidden flex gap-1">
-                  <div className="up-voted">
-                    <ThumbUpIconSolid />
+                <div className="video-info max-h-[315px] overflow-auto">
+                  <h2 className="video-title text-rose-600 text-2xl font-bold">
+                    {video.snippet.title}
+                  </h2>
+                  <div className="flex gap-4">
+                    <div className="shared-by">
+                      Shared by {video.sharedBy}
+                    </div>
+                    <div className="vote-buttons">
+                      <div className="un-vote  flex gap-1">
+                        <div className="up-vote">
+                          <ThumbUpIconOutline />
+                        </div>
+                        <div className="down-vote">
+                          <ThumbDownIconOutline />
+                        </div>
+                      </div>
+                      <div className="voted hidden flex gap-1">
+                        <div className="up-voted">
+                          <ThumbUpIconSolid />
+                        </div>
+                        <div className="down-voted">
+                          <ThumbDownIconSolid />
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="down-voted">
-                    <ThumbDownIconSolid />
+                  <div className="vote-counter flex items-center gap-7">
+                    <span className="up-vote-counter">
+                      <ThumbUpIconOutline className="inline h-7 w-7" />
+                      12
+                    </span>
+                    <span className="down-vote-counter">
+                      <ThumbDownIconOutline className="inline h-7 w-7" />
+                      11
+                    </span>
+                  </div>
+                  <div className="description">
+                    <h2>Description</h2>
+                    <div className="description-content">
+                      <span className="text-gray-500 text-xs text-justify" >{video.snippet.description}</span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="vote-counter flex items-center gap-7">
-              <span className="up-vote-counter">
-                <ThumbUpIconOutline className="inline h-7 w-7" />
-                12
-              </span>
-              <span className="down-vote-counter">
-                <ThumbDownIconOutline className="inline h-7 w-7" />
-                11
-              </span>
-            </div>
-            <div className="description">
-              <h2>Description</h2>
-              <div className="description-content">lorem ipsum</div>
-            </div>
-          </div>
-        </div>
+            </>
+          );
+        })}
       </section>
     </>
   );
