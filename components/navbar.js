@@ -83,7 +83,6 @@ const Navbar = ({ email, setEmail }) => {
                 required={true}
                 placeholder="email"
                 {...register("email", {
-                  required: "required",
                   pattern: {
                     value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
                     message: "Entered value does not match email format",
@@ -97,9 +96,6 @@ const Navbar = ({ email, setEmail }) => {
                 id="password"
                 placeholder="password"
                 className=""
-                {...register("password", {
-                  required: "required",
-                })}
               />
               <button
                 role={"login-button"}
