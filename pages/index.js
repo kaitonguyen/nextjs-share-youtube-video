@@ -95,111 +95,118 @@ export default function Home({
 
   return (
     <>
-      <section id="videos-list" className="container max-w-6xl m-auto">
-        {videosList.map((video) => {
-          return (
-            <div
-              id="videos-list-item"
-              className="w-full grid grid-cols-2 justify-center mt-12"
-              key={video.etag}
-            >
-              <div className="video">
-                <iframe
-                  width="560"
-                  height="315"
-                  src={`https://www.youtube.com/embed/${video.id}`}
-                  title={video.snippet.title}
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
-              </div>
-              <div className="video-info max-h-[315px] overflow-auto">
-                <h2 className="video-title text-rose-600 text-2xl font-bold">
-                  {video.snippet.title}
-                </h2>
-                <div className="flex gap-4">
-                  <div className="shared-by">Shared by {video.sharedBy}</div>
-                  <div className="vote-buttons">
-                    <div
-                      className={`un-vote flex gap-1 ${
-                        (!email ||
-                          (voteState &&
-                            voteState[email] &&
-                            voteState[email].hasOwnProperty(
-                              video.timestamp
-                            ))) &&
-                        "hidden"
-                      }`}
-                    >
-                      <button
-                        className="up-vote"
-                        onClick={() => handleVote(video.timestamp, "up")}
-                      >
-                        <ThumbUpIconOutline />
-                      </button>
-                      <button
-                        className="down-vote"
-                        onClick={() => handleVote(video.timestamp, "down")}
-                      >
-                        <ThumbDownIconOutline />
-                      </button>
-                    </div>
-
-                    <div
-                      className={`voted flex gap-1 ${
-                        (!email ||
-                          !voteState ||
-                          !voteState[email] ||
-                          !voteState[email].hasOwnProperty(video.timestamp)) &&
-                        "hidden"
-                      }`}
-                    >
+      <section
+        id="videos-list"
+        data-testid="videos-list"
+        className="container max-w-6xl m-auto"
+      >
+        {videosList &&
+          videosList.map((video) => {
+            return (
+              <div
+                id="videos-list-item"
+                className="w-full grid grid-cols-2 justify-center mt-12"
+                key={video.etag}
+              >
+                <div className="video">
+                  <iframe
+                    width="560"
+                    height="315"
+                    src={`https://www.youtube.com/embed/${video.id}`}
+                    title={video.snippet.title}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+                <div className="video-info max-h-[315px] overflow-auto">
+                  <h2 className="video-title text-rose-600 text-2xl font-bold">
+                    {video.snippet.title}
+                  </h2>
+                  <div className="flex gap-4">
+                    <div className="shared-by">Shared by {video.sharedBy}</div>
+                    <div className="vote-buttons">
                       <div
-                        className={`up-voted ${
-                          voteState &&
-                          voteState[email] &&
-                          voteState[email][video.timestamp] === "down" &&
+                        className={`un-vote flex gap-1 ${
+                          (!email ||
+                            (voteState &&
+                              voteState[email] &&
+                              voteState[email].hasOwnProperty(
+                                video.timestamp
+                              ))) &&
                           "hidden"
                         }`}
                       >
-                        <ThumbUpIconSolid />
+                        <button
+                          className="up-vote"
+                          onClick={() => handleVote(video.timestamp, "up")}
+                        >
+                          <ThumbUpIconOutline />
+                        </button>
+                        <button
+                          className="down-vote"
+                          onClick={() => handleVote(video.timestamp, "down")}
+                        >
+                          <ThumbDownIconOutline />
+                        </button>
                       </div>
+
                       <div
-                        className={`down-voted ${
-                          voteState &&
-                          voteState[email] &&
-                          voteState[email][video.timestamp] === "up" &&
+                        className={`voted flex gap-1 ${
+                          (!email ||
+                            !voteState ||
+                            !voteState[email] ||
+                            !voteState[email].hasOwnProperty(
+                              video.timestamp
+                            )) &&
                           "hidden"
                         }`}
                       >
-                        <ThumbDownIconSolid />
+                        <div
+                          className={`up-voted ${
+                            voteState &&
+                            voteState[email] &&
+                            voteState[email][video.timestamp] === "down" &&
+                            "hidden"
+                          }`}
+                        >
+                          <ThumbUpIconSolid />
+                        </div>
+                        <div
+                          className={`down-voted ${
+                            voteState &&
+                            voteState[email] &&
+                            voteState[email][video.timestamp] === "up" &&
+                            "hidden"
+                          }`}
+                        >
+                          <ThumbDownIconSolid />
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className="vote-counter flex items-center gap-7">
-                  <span className="up-vote-counter">
-                    <ThumbUpIconOutline className="inline h-7 w-7" />
-                    12
-                  </span>
-                  <span className="down-vote-counter">
-                    <ThumbDownIconOutline className="inline h-7 w-7" />
-                    11
-                  </span>
-                </div>
-                <div className="description">
-                  <h2>Description</h2>
-                  <div className="description-content">
-                    <span className="text-gray-500 text-xs text-justify">
-                      {video.snippet.description}
+                  <div className="vote-counter flex items-center gap-7">
+                    <span className="up-vote-counter">
+                      <ThumbUpIconOutline className="inline h-7 w-7" />
+                      12
+                    </span>
+                    <span className="down-vote-counter">
+                      <ThumbDownIconOutline className="inline h-7 w-7" />
+                      11
                     </span>
                   </div>
+                  <div className="description">
+                    <h2>Description</h2>
+                    <div className="description-content">
+                      <span className="text-gray-500 text-xs text-justify">
+                        {video.snippet.description}
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
       </section>
     </>
   );

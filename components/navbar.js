@@ -1,23 +1,29 @@
 import Link from "next/link";
 import { Router, useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 
 const Navbar = ({ email, setEmail }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
   const router = useRouter();
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    const email = e.target[0].value;
-    const password = e.target[1].value;
-    if (!email || !password) {
-      alert("Please enter email and password");
-    } else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-      alert("This email is invalid.");
-    } else {
-      setEmail(email);
-      e.target.reset();
-    }
+  const handleLogin = async (data) => {
+    setEmail(data.email);
+    reset();
   };
+
+  useEffect(() => {
+    if (errors.email) {
+      alert(errors.email.message);
+    } else if (errors.password) {
+      alert(errors.password.message);
+    }
+  }, [errors.email, errors.password]);
 
   const handleLogout = async () => {
     await setEmail("");
@@ -44,38 +50,66 @@ const Navbar = ({ email, setEmail }) => {
         </h1>
       </div>
       <div className="">
-        <div
-          id="authenticated"
-          className={`flex md:gap-5 items-center ${!email && "hidden"}`}
-        >
-          <span>Welcome {email}</span>
-          <Link href={"/share"}>
-            <a className="px-5 py-3 bg-sky-600 text-white">Share a movie</a>
-          </Link>
-          <button
-            className="px-5 py-3 bg-rose-500 text-white"
-            onClick={handleLogout}
+        {email && (
+          <div
+            data-testid="authenticated-actions"
+            className={`flex md:gap-5 items-center`}
           >
-            Logout
-          </button>
-        </div>
-        <div id="unauthenticated">
-          <form
-            onSubmit={handleLogin}
-            className={`flex md:gap-5 ${email && "hidden"}`}
-          >
-            <input type="text" id="email" placeholder="email" className="" />
-            <input
-              type="password"
-              id="password"
-              placeholder="password"
-              className=""
-            />
-            <button className="px-5 py-3 bg-sky-600 text-white">
-              Login/Register
+            <span role={"welcome-text"}>Welcome {email}</span>
+            <Link href={"/share"}>
+              <a className="px-5 py-3 bg-sky-600 text-white">Share a movie</a>
+            </Link>
+            <button
+              className="px-5 py-3 bg-rose-500 text-white"
+              onClick={handleLogout}
+              role={"logout-button"}
+            >
+              Logout
             </button>
-          </form>
-        </div>
+          </div>
+        )}
+
+        {!email && (
+          <div id="unauthenticated">
+            <form
+              data-testid="login-form"
+              onSubmit={handleSubmit(handleLogin)}
+              className={`flex md:gap-5 `}
+            >
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required={true}
+                placeholder="email"
+                {...register("email", {
+                  required: "required",
+                  pattern: {
+                    value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                    message: "Entered value does not match email format",
+                  },
+                })}
+              />
+              <input
+                type="password"
+                name="password"
+                required={true}
+                id="password"
+                placeholder="password"
+                className=""
+                {...register("password", {
+                  required: "required",
+                })}
+              />
+              <button
+                role={"login-button"}
+                className="px-5 py-3 bg-sky-600 text-white"
+              >
+                Login/Register
+              </button>
+            </form>
+          </div>
+        )}
       </div>
     </header>
   );
